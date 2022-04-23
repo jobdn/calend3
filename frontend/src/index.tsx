@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import DApp from "./DApp";
+import DApp from "./components/DApp/DApp";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

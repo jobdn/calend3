@@ -1,10 +1,31 @@
-import "./DApp.scss";
 import detectedEthereumProvider from "@metamask/detect-provider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import Calendar from "../Calendar/Calendar";
+
+import "./DApp.scss";
 
 const DApp: React.FC = () => {
   const [account, setAccount] = useState<string>("");
   const [auth, setAuth] = useState<boolean>(false);
+
+  useEffect(() => {
+    isAuth();
+  }, []);
+
+  const isAuth = async () => {
+    const provider = await detectedEthereumProvider();
+    const accounts = await (provider as any).request({
+      method: "eth_accounts",
+    });
+
+    if (accounts.length > 0) {
+      setAccount(accounts[0]);
+      setAuth(true);
+    } else {
+      console.log("Not authorized account found");
+    }
+  };
 
   const onConnect: React.MouseEventHandler<HTMLButtonElement> = async () => {
     try {
@@ -14,8 +35,6 @@ const DApp: React.FC = () => {
         method: "eth_requestAccounts",
       });
       if (accounts.length > 0) {
-        console.log(accounts);
-
         setAuth(true);
         setAccount(accounts[0]);
       } else {
@@ -33,7 +52,7 @@ const DApp: React.FC = () => {
         <p id="slogan">Web3 appointment scheduler</p>
       </header>
       {auth ? (
-        <div>show calendar component</div>
+        <Calendar />
       ) : (
         <button onClick={onConnect}>connect wallet</button>
       )}
