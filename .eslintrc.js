@@ -5,7 +5,7 @@ module.exports = {
     mocha: true,
     node: true,
   },
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "react-hooks"],
   extends: [
     "standard",
     "plugin:prettier/recommended",
@@ -16,6 +16,8 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "node/no-unsupported-features/es-syntax": [
       "error",
       { ignores: ["modules"] },
