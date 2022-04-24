@@ -10,22 +10,22 @@ const DApp: React.FC = () => {
   const [auth, setAuth] = useState<boolean>(false);
 
   useEffect(() => {
+    const isAuth = async () => {
+      const provider = await detectedEthereumProvider();
+      const accounts = await (provider as any).request({
+        method: "eth_accounts",
+      });
+
+      if (accounts.length > 0) {
+        setAccount(accounts[0]);
+        setAuth(true);
+      } else {
+        console.log("Not authorized account found");
+      }
+    };
+
     isAuth();
   }, []);
-
-  const isAuth = async () => {
-    const provider = await detectedEthereumProvider();
-    const accounts = await (provider as any).request({
-      method: "eth_accounts",
-    });
-
-    if (accounts.length > 0) {
-      setAccount(accounts[0]);
-      setAuth(true);
-    } else {
-      console.log("Not authorized account found");
-    }
-  };
 
   const onConnect: React.MouseEventHandler<HTMLButtonElement> = async () => {
     try {
@@ -51,6 +51,7 @@ const DApp: React.FC = () => {
         <h1>calend3</h1>
         <p id="slogan">Web3 appointment scheduler</p>
       </header>
+
       {auth ? (
         <Calendar />
       ) : (
