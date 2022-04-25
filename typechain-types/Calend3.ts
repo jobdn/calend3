@@ -22,20 +22,68 @@ import type {
   OnEvent,
 } from "./common";
 
+export declare namespace Calend3 {
+  export type AppointmentStruct = {
+    title: string;
+    attendee: string;
+    startTime: BigNumberish;
+    endTime: BigNumberish;
+    amountPaid: BigNumberish;
+  };
+
+  export type AppointmentStructOutput = [
+    string,
+    string,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ] & {
+    title: string;
+    attendee: string;
+    startTime: BigNumber;
+    endTime: BigNumber;
+    amountPaid: BigNumber;
+  };
+}
+
 export interface Calend3Interface extends utils.Interface {
   functions: {
+    "addAppointment(string,uint256,uint256)": FunctionFragment;
+    "getAppoinments()": FunctionFragment;
     "getRate()": FunctionFragment;
     "setRate(uint256)": FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: "getRate" | "setRate"): FunctionFragment;
+  getFunction(
+    nameOrSignatureOrTopic:
+      | "addAppointment"
+      | "getAppoinments"
+      | "getRate"
+      | "setRate"
+  ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "addAppointment",
+    values: [string, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAppoinments",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "getRate", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "setRate",
     values: [BigNumberish]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "addAppointment",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAppoinments",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getRate", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setRate", data: BytesLike): Result;
 
@@ -69,43 +117,98 @@ export interface Calend3 extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    addAppointment(
+      _title: string,
+      _startTime: BigNumberish,
+      _endTime: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    getAppoinments(
+      overrides?: CallOverrides
+    ): Promise<
+      [Calend3.AppointmentStructOutput[]] & {
+        _appointments: Calend3.AppointmentStructOutput[];
+      }
+    >;
+
     getRate(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     setRate(
-      rate: BigNumberish,
+      _rate: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
+  addAppointment(
+    _title: string,
+    _startTime: BigNumberish,
+    _endTime: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  getAppoinments(
+    overrides?: CallOverrides
+  ): Promise<Calend3.AppointmentStructOutput[]>;
+
   getRate(overrides?: CallOverrides): Promise<BigNumber>;
 
   setRate(
-    rate: BigNumberish,
+    _rate: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    addAppointment(
+      _title: string,
+      _startTime: BigNumberish,
+      _endTime: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    getAppoinments(
+      overrides?: CallOverrides
+    ): Promise<Calend3.AppointmentStructOutput[]>;
+
     getRate(overrides?: CallOverrides): Promise<BigNumber>;
 
-    setRate(rate: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    setRate(_rate: BigNumberish, overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {};
 
   estimateGas: {
+    addAppointment(
+      _title: string,
+      _startTime: BigNumberish,
+      _endTime: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    getAppoinments(overrides?: CallOverrides): Promise<BigNumber>;
+
     getRate(overrides?: CallOverrides): Promise<BigNumber>;
 
     setRate(
-      rate: BigNumberish,
+      _rate: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    addAppointment(
+      _title: string,
+      _startTime: BigNumberish,
+      _endTime: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getAppoinments(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     setRate(
-      rate: BigNumberish,
+      _rate: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
