@@ -9,6 +9,7 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -121,7 +122,7 @@ export interface Calend3 extends BaseContract {
       _title: string,
       _startTime: BigNumberish,
       _endTime: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     getAppoinments(
@@ -144,7 +145,7 @@ export interface Calend3 extends BaseContract {
     _title: string,
     _startTime: BigNumberish,
     _endTime: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   getAppoinments(
@@ -182,7 +183,7 @@ export interface Calend3 extends BaseContract {
       _title: string,
       _startTime: BigNumberish,
       _endTime: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     getAppoinments(overrides?: CallOverrides): Promise<BigNumber>;
@@ -200,7 +201,7 @@ export interface Calend3 extends BaseContract {
       _title: string,
       _startTime: BigNumberish,
       _endTime: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     getAppoinments(overrides?: CallOverrides): Promise<PopulatedTransaction>;

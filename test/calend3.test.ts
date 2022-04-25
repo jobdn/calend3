@@ -38,9 +38,17 @@ describe("Calend3", function () {
   describe("create and get appointments", () => {
     it("should be possible to create and get an approintments", async () => {
       await calend3.setRate(utils.parseEther("0.001"));
-      await calend3
-        .connect(acc2)
-        .addAppointment("Daily call at 11:00 AM", 1650865484, 1650865544);
+      await expect(
+        await calend3
+          .connect(acc2)
+          // appointment for 1 minutes
+          .addAppointment("Daily call at 11:00 AM", 1650865484, 1650865544, {
+            value: utils.parseEther("0.001"),
+          })
+      ).to.changeEtherBalances(
+        [owner, acc2],
+        [utils.parseEther("0.001"), utils.parseEther("-0.001")]
+      );
 
       const appointments = await calend3.getAppoinments();
 
@@ -52,12 +60,22 @@ describe("Calend3", function () {
       expect(appointments[0].attendee).to.eq(acc2.address);
     });
 
-    it("should fail if if mine of appointment less than one minute", async () => {
+    it("should fail if time of appointment less than one minute", async () => {
       await expect(
         calend3
           .connect(acc2)
           .addAppointment("Daily call at 11:00 AM", 1650865480, 1650865481)
       ).to.be.revertedWith("Calend3: invalid time");
+    });
+
+    it("should fail if the attendee sends less than the required eth", async () => {
+      await expect(
+        calend3
+          .connect(acc2)
+          .addAppointment("Daily call at 11:00 AM", 1650865484, 1650865544, {
+            value: utils.parseEther("0.00001"),
+          })
+      ).to.be.revertedWith("Calend3: require more eth");
     });
   });
 });
