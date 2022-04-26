@@ -1,6 +1,7 @@
+import React, { FC } from "react";
 import "./Calendar.scss";
 
-const Calendar = () => {
+const Calendar: FC = () => {
   return <div id="calendar">Calendar</div>;
 };
 
