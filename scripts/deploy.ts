@@ -10,6 +10,7 @@ async function main() {
   await calend3.deployed();
 
   console.log("Calend3 deployed to:", calend3.address);
+  // TODO: change the CALEND3_ADDRESS in config.ts file while deploy is running
   saveFrontendFiles();
 }
 
@@ -26,8 +27,6 @@ const saveFrontendFiles = () => {
   );
 };
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;

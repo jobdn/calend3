@@ -1,13 +1,29 @@
-import detectedEthereumProvider from "@metamask/detect-provider";
 import { useEffect, useState } from "react";
+import { ExternalProvider } from "@ethersproject/providers";
+import { ethers } from "ethers";
+import detectedEthereumProvider from "@metamask/detect-provider";
 
+import calend3Artifact from "../../contracts/Calend3.json";
+import { config } from "../../contracts/config";
 import Calendar from "../Calendar/Calendar";
-
 import "./DApp.scss";
+
+const calend3Abi = calend3Artifact.abi;
+const provider = new ethers.providers.Web3Provider(
+  window.ethereum as ExternalProvider
+);
+
+const calend3Contract = new ethers.Contract(
+  config.CALEND3_ADDRESS,
+  calend3Abi,
+  provider
+);
 
 const DApp: React.FC = () => {
   const [account, setAccount] = useState<string>("");
   const [auth, setAuth] = useState<boolean>(false);
+
+  console.log(calend3Contract);
 
   useEffect(() => {
     const isAuth = async () => {
