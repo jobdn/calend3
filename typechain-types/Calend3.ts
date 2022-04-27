@@ -52,6 +52,7 @@ export interface Calend3Interface extends utils.Interface {
     "addAppointment(string,uint256,uint256)": FunctionFragment;
     "getAppoinments()": FunctionFragment;
     "getRate()": FunctionFragment;
+    "owner()": FunctionFragment;
     "setRate(uint256)": FunctionFragment;
   };
 
@@ -60,6 +61,7 @@ export interface Calend3Interface extends utils.Interface {
       | "addAppointment"
       | "getAppoinments"
       | "getRate"
+      | "owner"
       | "setRate"
   ): FunctionFragment;
 
@@ -72,6 +74,7 @@ export interface Calend3Interface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "getRate", values?: undefined): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "setRate",
     values: [BigNumberish]
@@ -86,6 +89,7 @@ export interface Calend3Interface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getRate", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setRate", data: BytesLike): Result;
 
   events: {};
@@ -135,6 +139,8 @@ export interface Calend3 extends BaseContract {
 
     getRate(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    owner(overrides?: CallOverrides): Promise<[string]>;
+
     setRate(
       _rate: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -153,6 +159,8 @@ export interface Calend3 extends BaseContract {
   ): Promise<Calend3.AppointmentStructOutput[]>;
 
   getRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+  owner(overrides?: CallOverrides): Promise<string>;
 
   setRate(
     _rate: BigNumberish,
@@ -173,6 +181,8 @@ export interface Calend3 extends BaseContract {
 
     getRate(overrides?: CallOverrides): Promise<BigNumber>;
 
+    owner(overrides?: CallOverrides): Promise<string>;
+
     setRate(_rate: BigNumberish, overrides?: CallOverrides): Promise<void>;
   };
 
@@ -189,6 +199,8 @@ export interface Calend3 extends BaseContract {
     getAppoinments(overrides?: CallOverrides): Promise<BigNumber>;
 
     getRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     setRate(
       _rate: BigNumberish,
@@ -207,6 +219,8 @@ export interface Calend3 extends BaseContract {
     getAppoinments(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     setRate(
       _rate: BigNumberish,
