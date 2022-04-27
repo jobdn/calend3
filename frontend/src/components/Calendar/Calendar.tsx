@@ -1,4 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
+import Stack from "@mui/material/Stack";
+import { Box, Slider } from "@mui/material";
 import { ExternalProvider } from "@ethersproject/providers";
 import { ethers } from "ethers";
 import { config } from "../../contracts/config";
@@ -21,16 +23,52 @@ const Calendar: FC<ICalendarProps> = ({ account }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
   const [rate, setRate] = useState(0);
-  const getData = async () => {
-    const owner = await calend3Contract.owner();
-    setIsAdmin(owner.toUpperCase() === account.toUpperCase());
-    const rate = await calend3Contract.getRate();
-    console.log(rate);
+
+  useEffect(() => {
+    const getData = async () => {
+      const owner = await calend3Contract.owner();
+      setIsAdmin(owner.toUpperCase() === account.toUpperCase());
+
+      const rate = await calend3Contract.getRate();
+      setRate(rate);
+    };
+
+    getData();
+  }, []);
+
+  const valueText = (value: number) => {
+    return `${value} ETH`;
+  };
+
+  const handleSliderChange: (
+    event: Event | React.SyntheticEvent<Element, Event>,
+    value: number | number[]
+  ) => void | undefined = (event, value) => {
+    setRate(value as number);
   };
 
   return (
-    <div id="calendar">
-      Calendar <button onClick={getData}>RAte</button>
+    <div>
+      {isAdmin ? (
+        <div className="admin">
+          <Box>
+            <h3>Set Your Minutely Rate: </h3>
+            <Stack>
+              <Slider
+                marks
+                step={0.001}
+                min={0}
+                max={0.1}
+                getAriaValueText={valueText}
+                onChangeCommitted={handleSliderChange}
+                valueLabelDisplay="auto"
+              />
+            </Stack>
+          </Box>
+        </div>
+      ) : (
+        <div id="calendar">Calendar</div>
+      )}
     </div>
   );
 };
