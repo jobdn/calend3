@@ -1,7 +1,11 @@
 .admin {
   width: 600px;
-  margin: 40px auto;
+  margin: 0 auto 40px;
   &__slider {
     margin: 20px 0;
+  }
+
+  &__settings-btn {
+    margin-right: 7px;
   }
 }

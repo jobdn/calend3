@@ -1,33 +1,20 @@
 import { Box, Button, Slider, Stack } from "@mui/material";
-import { ethers } from "ethers";
-import { useEffect, useState } from "react";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { FC } from "react";
 
-import { calend3Contract } from "../../helpers/Calend3.helper";
 import { marks } from "./marks";
+
+import { IAdminProps } from "../../models/IAdminProps";
 
 import "./Admin.scss";
 
-const Admin = () => {
-  const [rate, setRate] = useState(0);
-
+const Admin: FC<IAdminProps> = ({ rate, setRate, saveRate }) => {
   const handleSliderChange: (
     event: Event | React.SyntheticEvent<Element, Event>,
     value: number | number[]
   ) => void | undefined = (event, value) => {
     setRate(value as number);
   };
-
-  const saveRate = async () => {
-    await calend3Contract.setRate(ethers.utils.parseEther(rate.toString()));
-  };
-
-  useEffect(() => {
-    const getAndSetRate = async () => {
-      const rate = await calend3Contract.getRate();
-      setRate(parseFloat(ethers.utils.formatEther(rate)));
-    };
-    getAndSetRate();
-  }, []);
 
   return (
     <div className="admin">
@@ -40,16 +27,17 @@ const Admin = () => {
                 color: "#fff",
               },
             }}
+            defaultValue={rate}
             marks={marks}
-            value={rate}
             step={0.001}
             min={0}
             max={0.1}
             valueLabelDisplay="auto"
-            onChange={handleSliderChange}
+            onChangeCommitted={handleSliderChange}
           />
         </Stack>
         <Button variant="contained" size="large" onClick={saveRate}>
+          <SettingsIcon className="admin__settings-btn" />
           Set Configuration
         </Button>
       </Box>
