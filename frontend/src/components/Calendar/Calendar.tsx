@@ -1,27 +1,57 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Scheduler } from "devextreme-react/scheduler";
-
-import "devextreme/dist/css/dx.light.css";
+import { ethers } from "ethers";
 import { AppointmentAddedEvent } from "devextreme/ui/scheduler";
+import "devextreme/dist/css/dx.light.css";
 
-interface IAppointment {
-  text: string;
-  startDate: Date;
-  endDate: Date;
-}
+import { calend3Contract } from "../../helpers/Calend3.helper";
+import { IAppointment } from "../../models/IAppointment";
+import { ICalendarProps } from "../../models/ICalendarProps";
+import { IAppointmentFromContract } from "../../models/IAppointmentFromContract";
 
-const Calendar: FC = () => {
-  const [appointments, setAppointments] = useState<IAppointment[]>([
-    {
-      text: "Call",
-      startDate: new Date(2022, 3, 29, 16, 45),
-      endDate: new Date(2022, 3, 29, 17, 45),
-    },
-  ]);
+const Calendar: FC<ICalendarProps> = ({ rate }) => {
+  const [appointments, setAppointments] = useState<IAppointment[]>([]);
 
-  const onAddAppointment = (e: AppointmentAddedEvent) => {
-    // TODO: here calend3 will be called
-    console.log(e.appointmentData);
+  useEffect(() => {
+    const getAppointmentFromContract = async () => {
+      const appointmentsFromContract: IAppointmentFromContract[] =
+        await calend3Contract.getAppoinments();
+      const newAppointments = appointmentsFromContract.map((appointment) => {
+        return {
+          text: appointment.title,
+          startDate: new Date(appointment.startTime * 1000),
+          endDate: new Date(appointment.endTime * 1000),
+        };
+      });
+      setAppointments(newAppointments);
+    };
+
+    getAppointmentFromContract();
+  }, []);
+
+  const onAddAppointment = async (e: AppointmentAddedEvent) => {
+    const approintment: IAppointment = {
+      text: e.appointmentData.text as string,
+      startDate: e.appointmentData.startDate as Date,
+      endDate: e.appointmentData.endDate as Date,
+    };
+
+    try {
+      const startTime = +approintment.startDate / 1000;
+      const endTime = +approintment.endDate / 1000;
+      const cost = ((endTime - startTime) / 60) * rate;
+
+      await calend3Contract.addAppointment(
+        approintment.text,
+        startTime,
+        endTime,
+        {
+          value: ethers.utils.parseEther(cost.toString()),
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
