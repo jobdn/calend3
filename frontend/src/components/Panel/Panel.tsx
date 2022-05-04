@@ -19,9 +19,8 @@ const Panel: FC<IPanelProps> = ({ account }) => {
       const owner = await calend3Contract.owner();
       setIsAdmin(owner.toUpperCase() === account.toUpperCase());
     };
-
     getContractData();
-  }, [account]);
+  }, []);
 
   const saveRate = async () => {
     await calend3Contract.setRate(ethers.utils.parseEther(rate.toString()));
