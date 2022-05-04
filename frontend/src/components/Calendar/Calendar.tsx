@@ -16,18 +16,26 @@ const Calendar: FC<ICalendarProps> = ({ rate }) => {
     const getAppointmentFromContract = async () => {
       const appointmentsFromContract: IAppointmentFromContract[] =
         await calend3Contract.getAppoinments();
-      const newAppointments = appointmentsFromContract.map((appointment) => {
-        return {
-          text: appointment.title,
-          startDate: new Date(appointment.startTime * 1000),
-          endDate: new Date(appointment.endTime * 1000),
-        };
-      });
+      const newAppointments = transformAppointmentData(
+        appointmentsFromContract
+      );
       setAppointments(newAppointments);
     };
 
     getAppointmentFromContract();
   }, []);
+
+  const transformAppointmentData = (
+    appointmentsFromContract: IAppointmentFromContract[]
+  ): IAppointment[] => {
+    return appointmentsFromContract.map((appointment) => {
+      return {
+        text: appointment.title,
+        startDate: new Date(appointment.startTime * 1000),
+        endDate: new Date(appointment.endTime * 1000),
+      };
+    });
+  };
 
   const onAddAppointment = async (e: AppointmentAddedEvent) => {
     const approintment: IAppointment = {
@@ -36,11 +44,10 @@ const Calendar: FC<ICalendarProps> = ({ rate }) => {
       endDate: e.appointmentData.endDate as Date,
     };
 
+    const startTime = +approintment.startDate / 1000;
+    const endTime = +approintment.endDate / 1000;
+    const cost = ((endTime - startTime) / 60) * rate;
     try {
-      const startTime = +approintment.startDate / 1000;
-      const endTime = +approintment.endDate / 1000;
-      const cost = ((endTime - startTime) / 60) * rate;
-
       await calend3Contract.addAppointment(
         approintment.text,
         startTime,
