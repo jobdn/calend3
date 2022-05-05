@@ -20,6 +20,7 @@
     "antd": "^4.20.2",
     "devextreme": "21.2.7",
     "devextreme-react": "21.2.7",
+    "ethers": "^5.6.5",
     "moment": "^2.29.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
