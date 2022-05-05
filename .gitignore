@@ -8,8 +8,4 @@ typechain
 cache
 artifacts
 
-#Frontend files
-/frontend/src/contracts/
-
-
 .vscode

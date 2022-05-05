@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from "react";
+import { ethers } from "ethers";
 
 import "./Panel.scss";
 import Admin from "../Admin/Admin";
 import Calendar from "../Calendar/Calendar";
 import { IPanelProps } from "../../models/IPanelProps";
 import { calend3Contract } from "../../helpers/Calend3.helper";
-import { ethers } from "ethers";
 
 const Panel: FC<IPanelProps> = ({ account }) => {
   const [rate, setRate] = useState(0);

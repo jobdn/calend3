@@ -1,0 +1,3 @@
+export const config = {
+  CALEND3_ADDRESS: "0xeE1CE99b7D40A6b052234793b0E93A93124b592A",
+};
