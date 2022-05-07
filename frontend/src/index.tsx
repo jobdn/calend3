@@ -1,12 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import DApp from "./components/DApp/DApp";
+import { Provider } from "react-redux";
+import DApp from "./DApp";
+import { store } from "./store";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <DApp />
-  </React.StrictMode>
+  </Provider>
 );
