@@ -22,11 +22,15 @@ export const userSlice = createSlice({
     authUser(state) {
       state.isLoading = true;
     },
-    authUserSucces(state, action: PayloadAction<string>) {
+    setUserAccount(state, action: PayloadAction<string>) {
+      state.userAddress = action.payload;
       state.isLoading = false;
       state.error = "";
       state.isAuth = true;
-      state.userAddress = action.payload;
+    },
+    thereIsNotConnnectedAccounts(state) {
+      state.isAuth = false;
+      state.isLoading = false;
     },
     metamaskIsNotInstalled(state, action: PayloadAction<string>) {
       state.isLoading = false;
@@ -37,6 +41,10 @@ export const userSlice = createSlice({
   },
 });
 
-export const { authUserSucces, metamaskIsNotInstalled, authUser } =
-  userSlice.actions;
+export const {
+  setUserAccount,
+  metamaskIsNotInstalled,
+  authUser,
+  thereIsNotConnnectedAccounts,
+} = userSlice.actions;
 export default userSlice.reducer;
