@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { stat } from "fs";
 
 interface IUserState {
   userAddress: string;
+  isAdmin: boolean;
   isAuth: boolean;
   error: string;
   isLoading: boolean;
@@ -10,6 +10,7 @@ interface IUserState {
 
 const initialState: IUserState = {
   userAddress: "",
+  isAdmin: false,
   isAuth: false,
   error: "",
   isLoading: false,
@@ -25,8 +26,10 @@ export const userSlice = createSlice({
     setUserAccount(state, action: PayloadAction<string>) {
       state.userAddress = action.payload;
       state.isLoading = false;
-      state.error = "";
       state.isAuth = true;
+    },
+    setAdmin(state) {
+      state.isAdmin = true;
     },
     thereIsNotConnnectedAccounts(state) {
       state.isAuth = false;
@@ -46,5 +49,6 @@ export const {
   metamaskIsNotInstalled,
   authUser,
   thereIsNotConnnectedAccounts,
+  setAdmin,
 } = userSlice.actions;
 export default userSlice.reducer;
