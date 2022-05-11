@@ -4,18 +4,21 @@ import { ethers } from "ethers";
 import { AppointmentAddedEvent } from "devextreme/ui/scheduler";
 import "devextreme/dist/css/dx.light.css";
 
-import { calend3Contract } from "../../helpers/Calend3.helper";
+import Calend3Service from "../../services/Calend3Service";
 import { IAppointment } from "../../models/IAppointment";
-import { ICalendarProps } from "../../models/ICalendarProps";
 import { IAppointmentFromContract } from "../../models/IAppointmentFromContract";
+import { useDAppSelector } from "../../hooks/redux";
 
-const Calendar: FC<ICalendarProps> = ({ rate }) => {
+const Calendar: FC = () => {
   const [appointments, setAppointments] = useState<IAppointment[]>([]);
+  const { rate } = useDAppSelector((state) => state.contractReducer);
 
   useEffect(() => {
     const getAppointmentFromContract = async () => {
+      const contract = await Calend3Service.getContract();
+
       const appointmentsFromContract: IAppointmentFromContract[] =
-        await calend3Contract.getAppoinments();
+        await contract?.getAppoinments();
       const newAppointments = transformAppointmentData(
         appointmentsFromContract
       );
@@ -47,15 +50,11 @@ const Calendar: FC<ICalendarProps> = ({ rate }) => {
     const startTime = +approintment.startDate / 1000;
     const endTime = +approintment.endDate / 1000;
     const cost = ((endTime - startTime) / 60) * rate;
+    const contract = await Calend3Service.getContract();
     try {
-      await calend3Contract.addAppointment(
-        approintment.text,
-        startTime,
-        endTime,
-        {
-          value: ethers.utils.parseEther(cost.toString()),
-        }
-      );
+      await contract?.addAppointment(approintment.text, startTime, endTime, {
+        value: ethers.utils.parseEther(cost.toString()),
+      });
     } catch (error) {
       console.log(error);
     }

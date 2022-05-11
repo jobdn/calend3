@@ -4,16 +4,24 @@ import { FC } from "react";
 
 import { marks } from "./marks";
 
-import { IAdminProps } from "../../models/IAdminProps";
-
 import "./Admin.scss";
+import { useDAppDispatch, useDAppSelector } from "../../hooks/redux";
+import { setRate } from "../../store/reducers/ContractSlice";
+import Calend3Service from "../../services/Calend3Service";
 
-const Admin: FC<IAdminProps> = ({ rate, setRate, saveRate }) => {
+const Admin: FC = () => {
+  const { rate } = useDAppSelector((state) => state.contractReducer);
+  const dispatch = useDAppDispatch();
+
   const handleSliderChange: (
     event: Event | React.SyntheticEvent<Element, Event>,
     value: number | number[]
   ) => void | undefined = (event, value) => {
-    setRate(value as number);
+    dispatch(setRate(value as number));
+  };
+
+  const saveRate = async () => {
+    await Calend3Service.setRate(rate);
   };
 
   return (

@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 const DApp: React.FC = () => {
   const dispatch = useDAppDispatch();
-  const { error, isLoading, isAuth, userAddress } = useDAppSelector(
+  const { error, isLoading, isAuth } = useDAppSelector(
     (state) => state.userReducer
   );
 
@@ -18,8 +18,6 @@ const DApp: React.FC = () => {
     dispatch(userAuth("eth_requestAccounts"));
   };
 
-  console.log(isLoading);
-
   if (isLoading) return <h1>Page is loading...</h1>;
   if (error) return <h1>{error}</h1>;
 
@@ -30,7 +28,7 @@ const DApp: React.FC = () => {
         <p id="slogan">Web3 appointment scheduler</p>
       </header>
 
-      {isAuth && <Panel account={userAddress} />}
+      {isAuth && <Panel />}
       {!isAuth && <button onClick={onConnect}>connect wallet</button>}
     </div>
   );
