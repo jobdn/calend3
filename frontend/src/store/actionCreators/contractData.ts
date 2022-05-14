@@ -1,7 +1,7 @@
 import { DispatchType } from "..";
 import Calend3Service from "../../services/Calend3Service";
 import { setRate } from "../reducers/ContractSlice";
-import { setAdmin } from "../reducers/UserSlice";
+import { setAdmin } from "../reducers/auth/auth-slice";
 
 export const contractData =
   (userAccount: string) => async (dispatch: DispatchType) => {

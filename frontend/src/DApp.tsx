@@ -1,21 +1,21 @@
 import "./DApp.scss";
 import Panel from "./components/Panel/Panel";
 import { useDAppDispatch, useDAppSelector } from "./hooks/redux";
-import { userAuth } from "./store/actionCreators/userAuth";
+import { auth } from "./store/reducers/auth/action-creators";
 import { useEffect } from "react";
 
 const DApp: React.FC = () => {
-  const dispatch = useDAppDispatch();
   const { error, isLoading, isAuth } = useDAppSelector(
     (state) => state.userReducer
   );
+  const dispatch = useDAppDispatch();
 
   useEffect(() => {
-    dispatch(userAuth("eth_accounts"));
+    dispatch(auth("eth_accounts"));
   }, []);
 
   const onConnect: React.MouseEventHandler<HTMLButtonElement> = async () => {
-    dispatch(userAuth("eth_requestAccounts"));
+    dispatch(auth("eth_requestAccounts"));
   };
 
   if (isLoading) return <h1>Page is loading...</h1>;
