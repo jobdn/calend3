@@ -2,7 +2,7 @@ import detectEthereumProvider from "@metamask/detect-provider";
 
 import { DispatchType } from "../..";
 import Calend3Service from "../../../services/Calend3Service";
-import { setRate } from "../ContractSlice";
+import { setRate } from "../calendar/calendar-slice";
 import {
   metamaskIsNotInstalled,
   setAdmin,

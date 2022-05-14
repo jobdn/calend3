@@ -1,9 +1,8 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 
 import Admin from "../Admin/Admin";
 import Calendar from "../Calendar/Calendar";
-import { useDAppDispatch, useDAppSelector } from "../../hooks/redux";
-import { contractData } from "../../store/actionCreators/contractData";
+import { useDAppSelector } from "../../hooks/redux";
 
 import "./Panel.scss";
 

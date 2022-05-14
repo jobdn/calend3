@@ -6,39 +6,18 @@ import "devextreme/dist/css/dx.light.css";
 
 import Calend3Service from "../../services/Calend3Service";
 import { IAppointment } from "../../models/IAppointment";
-import { IAppointmentFromContract } from "../../models/IAppointmentFromContract";
-import { useDAppSelector } from "../../hooks/redux";
+import { useDAppDispatch, useDAppSelector } from "../../hooks/redux";
+import { CalendarActionCreators } from "../../store/reducers/calendar/action-creators";
 
 const Calendar: FC = () => {
-  const [appointments, setAppointments] = useState<IAppointment[]>([]);
-  const { rate } = useDAppSelector((state) => state.contractReducer);
+  const { rate, appointments } = useDAppSelector(
+    (state) => state.contractReducer
+  );
+  const dispatch = useDAppDispatch();
 
   useEffect(() => {
-    const getAppointmentFromContract = async () => {
-      const contract = await Calend3Service.getContract();
-
-      const appointmentsFromContract: IAppointmentFromContract[] =
-        await contract?.getAppoinments();
-      const newAppointments = transformAppointmentData(
-        appointmentsFromContract
-      );
-      setAppointments(newAppointments);
-    };
-
-    getAppointmentFromContract();
+    dispatch(CalendarActionCreators.appointments());
   }, []);
-
-  const transformAppointmentData = (
-    appointmentsFromContract: IAppointmentFromContract[]
-  ): IAppointment[] => {
-    return appointmentsFromContract.map((appointment) => {
-      return {
-        text: appointment.title,
-        startDate: new Date(appointment.startTime * 1000),
-        endDate: new Date(appointment.endTime * 1000),
-      };
-    });
-  };
 
   const onAddAppointment = async (e: AppointmentAddedEvent) => {
     const approintment: IAppointment = {

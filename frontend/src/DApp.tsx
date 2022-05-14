@@ -1,8 +1,10 @@
-import "./DApp.scss";
-import Panel from "./components/Panel/Panel";
-import { useDAppDispatch, useDAppSelector } from "./hooks/redux";
-import { auth } from "./store/reducers/auth/action-creators";
 import { useEffect } from "react";
+
+import { useDAppDispatch, useDAppSelector } from "./hooks/redux";
+import Panel from "./components/Panel/Panel";
+import { auth } from "./store/reducers/auth/action-creators";
+
+import "./DApp.scss";
 
 const DApp: React.FC = () => {
   const { error, isLoading, isAuth } = useDAppSelector(

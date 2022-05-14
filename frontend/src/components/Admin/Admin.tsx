@@ -2,9 +2,8 @@ import { Box, Button, Slider, Stack } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { FC } from "react";
 
-
 import { useDAppDispatch, useDAppSelector } from "../../hooks/redux";
-import { setRate } from "../../store/reducers/ContractSlice";
+import { setRate } from "../../store/reducers/calendar/calendar-slice";
 import Calend3Service from "../../services/Calend3Service";
 import { marks } from "./marks";
 
